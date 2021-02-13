@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
+import { List, Settings } from '@material-ui/icons'
 import './App.css';
+import ProjectList from './ProjectList/ProjectList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component<{}, { position: "projects" | "settings" }> {
+
+  constructor(navigationState: {}) {
+    super(navigationState)
+    this.state={ position: 'projects' }
+  }
+  render() {
+    const content=this.state.position=='projects'?<ProjectList/>:<p>some settings</p>
+    return (
+      <div>
+        {content}
+        <BottomNavigation value={this.state.position} showLabels
+          onChange={(ev, newVal) => {
+            this.setState({ position: newVal })
+          }}>
+          <BottomNavigationAction label="Projects" value="projects" icon={<List />} />
+          <BottomNavigationAction label="Settings" value="settings" icon={<Settings />} />
+        </BottomNavigation>
+      </div>
+    );
+  }
 }
 
 export default App;
